@@ -1,5 +1,7 @@
 n_best=4;
 
+I_R01=cell2mat(idx_best_R01);
+
 R01=mean(mean_alphaP_R01(:,I_R01(:,1:n_best)),2);
 R02=mean(mean_alphaP_R02(:,I_R02(:,1:n_best)),2);
 

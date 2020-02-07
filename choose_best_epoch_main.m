@@ -30,11 +30,11 @@
 % Eyes-closed   R02
 
 % Required toolbox EEGLAB to read EDFs
-eeglab_path = '/Users/matte/Desktop/mat_workspace/toolbox/eeglab13_4_4b';
+eeglab_path = '/Users/matteofraschini/Downloads/eeglab13_6_5b';
 
 addpath(eeglab_path)
 % input folder containing the data from the EEG dataset
-inDir       = '/Users/matte/Desktop/db/';   
+inDir       = '/Users/matteofraschini/Downloads/eegmmidb/';   
 
 % scorEpoch input struct
 

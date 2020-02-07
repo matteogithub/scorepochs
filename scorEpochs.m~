@@ -50,7 +50,7 @@ function [idx_best_ep,epoch,score_Xep] = scorEpochs(cfg,data)
     epLen   = cfg.windowL * cfg.fs;
     dataLen = size(data,2);
     nCh     = size(data,1);
-    idx_ep  = 1 : epLen : dataLen - epLen + 1;
+    idx_ep  = 1 : epLen : dataLen - epLen ;
     nEp     = numel(idx_ep);
     
     epoch   = cell(1,nEp);
