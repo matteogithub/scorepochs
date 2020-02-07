@@ -46,10 +46,10 @@ for i=1:length(cases)
             [Pxx_R02,F]=pwelch(my_data_R02(w,:)',[],[],Frange,fs);
             PSD_R02(w,:)=Pxx_R02;
         end
-        c_R01=abs(corr(PSD_R01','type','Spearman'));
+        c_R01=corr(PSD_R01','type','Spearman');
         c_R01(1:size(c_R01,1)+1:end)=0;
         score_R01(k,:)=sum(c_R01,1)/(size(c_R01,1)-1);
-        c_R02=abs(corr(PSD_R02','type','Spearman'));
+        c_R02=corr(PSD_R02','type','Spearman');
         c_R02(1:size(c_R02,1)+1:end)=0;
         score_R02(k,:)=sum(c_R02,1)/(size(c_R02,1)-1);
     end
