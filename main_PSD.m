@@ -49,5 +49,3 @@ for i=1:length(cases)
     end
     toc    
 end
-
-
