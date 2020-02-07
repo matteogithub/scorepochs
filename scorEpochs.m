@@ -70,7 +70,7 @@ function [idx_best_ep,epoch,score_Xep] = scorEpochs(cfg,data)
             
     end
     
-    % compute score across per channels and across epochs 
+    % compute score across channels and across epochs 
     pxxXch      = zeros(nEp,numel(cfg.freqRange));
     score_chXep = zeros(nCh,nEp);
     for c = 1 : nCh

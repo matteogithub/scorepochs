@@ -41,7 +41,7 @@ inDir       = '/Users/matteofraschini/Downloads/eegmmidb/';
 cfg.freqRange    = 1 : 30; % frequency range of interest to compute the power spectrum
 cfg.fs           = 160;    % sample frequency
 cfg.windowL      = 5;      % epoch length in second used to segment the data
-cfg.smoothFactor = 0;      % smoothing factor for the power spectrum
+cfg.smoothFactor = 3;      % smoothing factor for the power spectrum
 
 filter   = 'S*';
 cases    = dir(fullfile(inDir,filter));
