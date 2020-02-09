@@ -8,7 +8,34 @@
 %PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals (2003). Circulation. 101(23):e215-e220.
 
 
+% For each subject resting-state conditions are in R01 and R02 edf files 
+% Eyes-open     R01
+% Eyes-closed   R02
 
+% Required toolbox EEGLAB to read EDFs
+% https://sccn.ucsd.edu/eeglab/index.php
+
+%
+% INPUT
+%       eeglap_path  - pathname of eeglab folder
+%       inFolder     - input folder containing the data from the EEG dataset    
+%  
+%
+% OUTPUT
+%       it saves in ./output/idxBest_epochs_scores_per_condition.mat 
+%       the indexes of the epochs sorted in descending order in terms of
+%       similarity scoring
+%
+%       idx_best_R01  - indexes score for condition R01 (eyes-open)
+%       epoch_R01     - original recordings segmented in epochs (eyes-open) 
+%       score_R01     - similarity scores for condition R01 (eyes-open)   
+%       idx_best_R02  - indexes score for condition R01 (eyes-closed)
+%       epoch_R02     - riginal recordings segmented in epochs (eyes-closed) 
+%       score_R02     - similarity scores for condition R02 (eyes-closed) 
+% 
+%
+%
+%
 %     Copyright (C) 2020 Matteo Demuru, Matteo Fraschini
 % 
 %     This program is free software: you can redistribute it and/or modify
@@ -25,16 +52,12 @@
 %     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-% For each subject resting-state conditions are in R01 and R02 edf files 
-% Eyes-open     R01
-% Eyes-closed   R02
-
-% Required toolbox EEGLAB to read EDFs
-eeglab_path = '/Users/matteofraschini/Downloads/eeglab13_6_5b';
+function choose_best_epoch_main(eeglab_path,inFolder)
+%eeglab_path = '/Users/matte/Desktop/mat_workspace/toolbox/eeglab13_4_4b/';
 
 addpath(eeglab_path)
-% input folder containing the data from the EEG dataset
-inDir       = '/Users/matteofraschini/Downloads/eegmmidb/';   
+
+%inDir       = '/Users/matte/Desktop/eeg_db/physionet.org/files/eegmmidb/1.0.0/';   
 
 % scorEpoch input struct
 
@@ -44,7 +67,8 @@ cfg.windowL      = 5;      % epoch length in second used to segment the data
 cfg.smoothFactor = 3;      % smoothing factor for the power spectrum
 
 filter   = 'S*';
-cases    = dir(fullfile(inDir,filter));
+cases    = dir(fullfile(inFolder,filter));
+%cases    = cases(~cellfun(@isempty,regexp({cases(:).name},'S0[0.|1.]')'));
 nSubj    = numel(cases); 
 
 
@@ -57,11 +81,13 @@ epoch_R02    = cell(1,nSubj);
 score_R02    = cell(1,nSubj);
 
 
+
+
 for i = 1 : length(cases)
     
     
-    R01_F  =  fullfile(inDir,cases(i).name,strcat(cases(i).name,'R01.edf')); % file name eyes open
-    R02_F  =  fullfile(inDir,cases(i).name,strcat(cases(i).name,'R02.edf')); % file name eyes closed 
+    R01_F  =  fullfile(inFolder,cases(i).name,strcat(cases(i).name,'R01.edf')); % file name eyes open
+    R02_F  =  fullfile(inFolder,cases(i).name,strcat(cases(i).name,'R02.edf')); % file name eyes closed 
     
     % load data (channels X time samples)
     EEGR01 = pop_biosig(R01_F, 'importevent','off','importannot','off');
@@ -75,7 +101,22 @@ for i = 1 : length(cases)
     
     [idx_best_R01{i},epoch_R01{i},score_R01{i}] = scorEpochs(cfg,data_R01); 
     [idx_best_R02{i},epoch_R02{i},score_R02{i}] = scorEpochs(cfg,data_R02);
-  
+    
 end
 
+if(~exist(fullfile(pwd,'output'),'dir'))
+    
+    mkdir(fullfile(pwd,'output'));
+    
+end
 
+fileOUT = fullfile(pwd,'output','idxBest_epochs_scores_per_condition');
+
+
+save(fileOUT,'idx_best_R01', ...
+             'epoch_R01',    ...
+             'score_R01',    ... 
+             'idx_best_R02', ...
+             'epoch_R02',    ...
+             'score_R02'    ... 
+     );
