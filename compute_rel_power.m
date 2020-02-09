@@ -8,8 +8,10 @@
 %                          spectrum (see MATLAB pwelch function)
 %           fs           - integer representing sample frequency         
 %           windowL      - integer representing the window length (in seconds)  
+%           smoothFactor - smoothing factor for the power spectrum
 %           freqBOI      - frequency band of interest for which the
 %                          relative power will be calculated
+%
 %           
 % 
 %    epoch               - cell array with 2d array consisting of time-series (channels X time samples)
@@ -51,6 +53,10 @@ for e = 1 : nEp
     % compute power spectrum
     [pxx , F] = pwelch(epoch{e}',[],[],cfg.freqRange,cfg.fs);
      pxx      = pxx';
+    % smoothing the power spectrum
+    if(cfg.smoothFactor ~= 0)
+        pxx = movmean(pxx',cfg.smoothFactor)';
+    end
      
      % compute relative power spectrum
     [~,idx_start] = min(abs(F-boi(1)));
