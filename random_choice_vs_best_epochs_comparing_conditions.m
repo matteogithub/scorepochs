@@ -17,6 +17,7 @@
 
 fileIN = fullfile(pwd,'output','idxBest_epochs_scores_per_condition.mat');
 
+load(fileIN) 
 
 % compute relative power in alpha band for all the epochs
 
@@ -27,7 +28,8 @@ cfg = [];
 cfg.freqRange    = 1 : 30; % frequency range of interest to compute the power spectrum
 cfg.fs           = 160;    % sample frequency
 cfg.windowL      = 5;      % epoch length in second used to segment the data
-cfg.freqBOI      = [8 13];
+cfg.smoothFactor = 3;      % smoothing the power spectrum
+cfg.freqBOI      = [8 13]; % frequency band of interest for which calculate the relative power
 
 g_rPow_R01       = zeros(nSubj,nEp);
 g_rPow_R02       = zeros(nSubj,nEp);
