@@ -17,6 +17,7 @@
 
 fileIN = fullfile(pwd,'output','idxBest_epochs_scores_per_condition.mat');
 
+load(fileIN) 
 
 % compute relative power in alpha band for all the epochs
 
@@ -27,7 +28,8 @@ cfg = [];
 cfg.freqRange    = 1 : 30; % frequency range of interest to compute the power spectrum
 cfg.fs           = 160;    % sample frequency
 cfg.windowL      = 5;      % epoch length in second used to segment the data
-cfg.freqBOI      = [8 13];
+cfg.smoothFactor = 3;      % smoothing the power spectrum
+cfg.freqBOI      = [8 13]; % frequency band of interest for which calculate the relative power
 
 g_rPow_R01       = zeros(nSubj,nEp);
 g_rPow_R02       = zeros(nSubj,nEp);
@@ -54,14 +56,29 @@ dSTATS = zeros(size(idx_cmb,1),1);
 figure;
 plot(0,0)
 hold
+
+max_R02 = zeros(nSubj,1);
+min_R01 = ones(nSubj,1);
+
+dist_R01 = zeros(nSubj,size(idx_cmb,1));
+dist_R02 = zeros(nSubj,size(idx_cmb,1));
+
 for i = 1 : size(idx_cmb,1)
       
+    dist_R01(:,i) = mean(g_rPow_R01(:,idx_cmb(i,:)),2);
     cR01 = mean(g_rPow_R01(:,idx_cmb(i,:)),2);
     
-    plot(cR01,'r*');
+    plot(cR01,'ro');
+    
+    dist_R02(:,i) = mean(g_rPow_R02(:,idx_cmb(i,:)),2);
     cR02 = mean(g_rPow_R02(:,idx_cmb(i,:)),2);
     
-    plot(cR02,'y*');
+    plot(cR02,'yo');
+    
+    max_R02 = max(max_R02,cR02);
+    min_R01 = min(min_R01,cR01);
+    
+    
     
     [cP,cH,cSTATS] = signrank(cR01,cR02);
     
@@ -70,6 +87,8 @@ for i = 1 : size(idx_cmb,1)
     dSTATS(i) = cSTATS.signedrank;
     
 end
+
+
 
 idx_chosen_R01 = reshape(cell2mat(idx_best_R01),nEp,nSubj)';
 idx_chosen_R02 = reshape(cell2mat(idx_best_R02),nEp,nSubj)';
@@ -82,9 +101,11 @@ R02 = mean(g_rPow_R02(:,idx_chosen_R02),2);
 
 [P,H,STATS] = signrank(R01,R02);
 
-plot(R01,'bo')
-plot(R02,'go')
+plot(R01,'b*')
+plot(R02,'g*')
 
+plot(min_R01,'b+')
+plot(max_R02,'g+')
 
 ylabel('Relative alpha','FontSize',16)
 xlabel('Subject','FontSize',16)
