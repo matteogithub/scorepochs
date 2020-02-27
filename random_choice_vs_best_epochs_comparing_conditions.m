@@ -79,11 +79,11 @@ for i = 1 : size(idx_cmb,1)
     min_R01 = min(min_R01,cR01);
     
     
-    %[cP,cH,cSTATS] = signrank(cR01,cR02);
+    [cP,cH,cSTATS] = signrank(cR01,cR02);
     
-    %dH(i)     = cH;
-    %dP(i)     = cP;
-    %dSTATS(i) = cSTATS.signedrank;
+    dH(i)     = cH;
+    dP(i)     = cP;
+    dSTATS(i) = cSTATS.signedrank;
     
 end
 
