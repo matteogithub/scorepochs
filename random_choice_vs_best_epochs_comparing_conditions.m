@@ -95,9 +95,12 @@ idx_chosen_R02 = reshape(cell2mat(idx_best_R02),nEp,nSubj)';
 idx_chosen_R01 = idx_chosen_R01(:,1:nEp2sel);
 idx_chosen_R02 = idx_chosen_R02(:,1:nEp2sel);
 
-R01 = mean(g_rPow_R01(:,idx_chosen_R01),2);
-R02 = mean(g_rPow_R02(:,idx_chosen_R02),2);
-
+ R01 = zeros(nSubj,1);
+ R02 = zeros(nSubj,1);
+for i = 1 : nSubj  
+    R01(i,1) = mean(g_rPow_R01(i,idx_chosen_R01(i,:)));
+    R02(i,1) = mean(g_rPow_R02(i,idx_chosen_R02(i,:)));
+end
 [P,H,STATS] = signrank(R01,R02);
 
 plot(R01,'b*')
