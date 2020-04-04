@@ -1,5 +1,5 @@
-# scorEpoch
+# scorEpochs
 
-scorEpoch: a computer aided scoring tool for resting-state M/EEG epochs
+scorEpochs: a computer aided scoring tool for resting-state M/EEG epochs
 
 By Matteo Fraschini and Matteo Demuru
