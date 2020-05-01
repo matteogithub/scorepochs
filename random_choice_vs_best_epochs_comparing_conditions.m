@@ -83,7 +83,7 @@ for i = 1 : size(idx_cmb,1)
     
     dH(i)     = cH;
     dP(i)     = cP;
-    dSTATS(i) = cSTATS.signedrank;
+    dSTATS(i) = cSTATS.zval;
     
 end
 
