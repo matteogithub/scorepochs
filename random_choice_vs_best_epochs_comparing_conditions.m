@@ -97,29 +97,31 @@ end
 scorEpochEffSize = abs(STATS.tstat/sqrt(length(R01)));
 
 fig(1) = figure;
+subplot(2,3,[1,2])
 plot(effect_size,'*--');
 hold
-line([0 size(idx_cmb,1)],[scorEpochEffSize scorEpochEffSize],'LineStyle','--','Color','green','LineWidth',2)
+line([0 size(idx_cmb,1)],[scorEpochEffSize scorEpochEffSize],'LineStyle','--','Color','green','LineWidth',2.5)
 set(gca,'FontSize',30)
 xlabel('t-test run','FontSize',33)
 ylabel('Cohen''s d effect-size','FontSize',33)
-legend({'random selection','scorEpoch selection'},'FontSize',25);
-fig(2) = figure;
+legend({'random selection','scorEpochs selection'},'FontSize',18);
+title('(a) Cohen''s d timecourse','FontSize',22)
+%fig(2) = figure;
+subplot(2,3,[4,5])
 [counts,BinC] = hist(effect_size,50);
 bar(BinC,counts);
 hold
-line([scorEpochEffSize scorEpochEffSize],[0 max(counts)+1],'Color','green','LineStyle','--','LineWidth',2)
+line([scorEpochEffSize scorEpochEffSize],[0 max(counts)+1],'Color','green','LineStyle','--','LineWidth',2.5)
 set(gca,'FontSize',30)
 xlabel('Cohen''s d','FontSize',33)
 ylabel('# Occurrences','FontSize',33)
-title(sprintf('90 percentile: %.4f scorEpoch: %.4f',prctile(effect_size,90),scorEpochEffSize));
-legend({'random selection','scorEpoch selection'},'FontSize',25)
+title('(b) Cohen''s d distribution','FontSize',22);
+legend({'random selection','scorEpochs selection'},'FontSize',18)
 
-outFname = {'cohenD_timeline','cohenD_distribution'};
+outFname = {'cohenD_timeline_and_distribution'};
 for i = 1 : numel(fig)
   set(fig(i),'WindowState','fullscreen')
   outfile = fullfile(pwd,'output',outFname{i});
-  pause(5)
   print(fig(i),outfile,'-djpeg');
   close(fig(i))
   
