@@ -1,5 +1,5 @@
 
-function [ score_table ] = pipeline01_dev2_happe(eeglab_dir, code_dir, data_dir, subj_name_edf)
+function [ score_table ] = pipeline01_dev3_happe_ASR(eeglab_dir, code_dir, data_dir, subj_name_edf)
 %function [ score_table, eeg_ICA ] = pipeline01_dev2_happe(eeglab_dir, code_dir, data_dir, subj_name_edf)
 
 %    This function performs a series of preprocessing steps
@@ -101,7 +101,7 @@ function [ score_table ] = pipeline01_dev2_happe(eeglab_dir, code_dir, data_dir,
     % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % Nose direction should be set from '-Y' to default +X in EEG.chanlocs
     % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    eeg_struct=pop_chanedit(eeg_struct, 'load',{fullfile(data_dir, chan_file),'filetype','xyz'},'nosedir','-Y');
+    eeg_struct=pop_chanedit(eeg_struct, 'load',{fullfile(code_dir, chan_file),'filetype','xyz'},'nosedir','-Y');
     %eeg_struct=pop_chanedit(eeg_struct, 'load',{'D:\\IIT\\_PROJECT\\SCORE_epoch\\data\\coord_BS_motorEEG.txt','filetype','xyz'},'nosedir','-Y');
     %EEG=pop_chanedit(EEG, 'lookup','D:\\IIT\\EEG\\eeglab_20201226\\plugins\\dipfit\\standard_BESA\\standard-10-5-cap385.elp','load',{'D:\\IIT\\_PROJECT\\SCORE_epoch\\data\\coord_BS_motorEEG.txt','filetype','xyz'},'nosedir','-Y');
 
